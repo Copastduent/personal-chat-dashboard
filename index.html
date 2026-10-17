@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071b24">
+
   <title>Personal Chat Dashboard</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -14,232 +17,573 @@
 
     body {
       min-height: 100vh;
+      background: linear-gradient(135deg, #071b24, #075e54, #087f8c);
+      color: #fff;
+      padding: 20px;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .login-wrapper {
+      min-height: calc(100vh - 40px);
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, #071b24, #075e54);
-      color: white;
-      padding: 20px;
     }
 
     .card {
       width: 100%;
-      max-width: 390px;
-      padding: 30px;
-      border-radius: 18px;
-      background: #102d35;
-      box-shadow: 0 15px 45px #0005;
+      max-width: 410px;
+      padding: 32px;
+      background: rgba(12, 35, 43, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 10px;
     }
 
     h1 {
       text-align: center;
+      font-size: 26px;
       margin-bottom: 10px;
-      font-size: 25px;
     }
 
     .subtitle {
       text-align: center;
       color: #b8d2d4;
-      margin-bottom: 28px;
-      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 25px;
     }
 
     label {
       display: block;
-      margin: 15px 0 8px;
+      margin: 17px 0 8px;
       font-size: 14px;
+      color: #d9eeee;
     }
 
     input {
       width: 100%;
-      padding: 13px;
-      border-radius: 9px;
-      border: 1px solid #42636a;
-      background: #092129;
+      padding: 14px;
       color: white;
+      background: #092129;
+      border: 1px solid #42636a;
+      border-radius: 10px;
       outline: none;
     }
 
-    button {
+    input:focus {
+      border-color: #20c997;
+      box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.13);
+    }
+
+    .primary-button {
       width: 100%;
+      padding: 14px;
       margin-top: 22px;
-      padding: 13px;
-      border: none;
-      border-radius: 9px;
+      border: 0;
+      border-radius: 10px;
       background: #20c997;
       color: #062c27;
       font-weight: bold;
-      cursor: pointer;
+    }
+
+    .primary-button:hover {
+      background: #49e0b3;
     }
 
     button:disabled {
       opacity: 0.6;
+      cursor: wait;
     }
 
-    #status {
+    .status {
       margin-top: 15px;
-      text-align: center;
       font-size: 14px;
+      line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
     .note {
-      margin-top: 22px;
       color: #b8d2d4;
       font-size: 12px;
-      line-height: 1.6;
       text-align: center;
+      line-height: 1.7;
+      margin-top: 22px;
     }
 
-    .hidden {
-      display: none;
-    }
-
-    #dashboard {
+    .container {
       width: 100%;
-      max-width: 700px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 20px 0;
+      border-bottom: 1px solid #ffffff30;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 5px;
+      color: #c1dfdf;
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+    .logout-button {
+      border: 1px solid #ffffff50;
+      border-radius: 9px;
+      padding: 11px 17px;
+      color: white;
+      background: #ffffff12;
+    }
+
+    .welcome {
+      margin: 28px 0 20px;
+    }
+
+    .welcome h1 {
+      text-align: left;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #d1e8e8;
+      overflow-wrap: anywhere;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .stat-card, .panel {
+      background: rgba(8, 34, 42, 0.82);
+      border: 1px solid #ffffff20;
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .stat-card .icon {
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
+
+    .stat-card h2 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .stat-card p, .panel p {
+      color: #c1dada;
+      line-height: 1.7;
     }
 
     .panel {
-      background: #102d35;
-      padding: 25px;
-      border-radius: 15px;
-      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
-    .message {
-      padding: 12px;
+    .panel h2 {
+      font-size: 19px;
+      margin-bottom: 12px;
+    }
+
+    .chat-list {
+      margin-top: 15px;
+    }
+
+    .chat-item {
+      background: #ffffff0b;
+      border: 1px solid #ffffff16;
+      border-radius: 10px;
+      padding: 14px;
       margin-top: 10px;
-      background: #1a4147;
-      border-radius: 9px;
       overflow-wrap: anywhere;
+    }
+
+    .chat-item strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .chat-time {
+      color: #a9caca;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .secondary-button {
+      border: 1px solid #ffffff45;
+      border-radius: 9px;
+      padding: 11px 15px;
+      color: white;
+      background: #ffffff10;
+      margin-top: 15px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #b8d2d4;
+      font-size: 12px;
+      padding: 25px 0;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 14px;
+      }
+
+      .card {
+        padding: 23px;
+      }
+
+      .brand {
+        font-size: 19px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <main class="card" id="login">
-    <h1>💬 Personal Chat</h1>
-    <p class="subtitle">Your private chat dashboard</p>
+  <!-- LOGIN PAGE -->
+  <section id="loginPage" class="login-wrapper">
+    <div class="card">
+      <div class="logo">💬</div>
 
-    <form id="loginForm">
-      <label for="email">Email address</label>
-      <input id="email" type="email" autocomplete="username"
-             placeholder="Enter your email" required>
+      <h1>Personal Chat</h1>
 
-      <label for="password">Password</label>
-      <input id="password" type="password"
-             autocomplete="current-password"
-             placeholder="Enter your password" required>
-
-      <button id="loginButton" type="submit">Login Securely</button>
-    </form>
-
-    <p id="status" role="status"></p>
-
-    <p class="note">
-      Secure sign-in for your personal dashboard.
-      WhatsApp messages are not connected yet.
-    </p>
-  </main>
-
-  <main id="dashboard" class="hidden">
-    <h1>💬 My Chat Dashboard</h1>
-
-    <section class="panel">
-      <h2>Welcome!</h2>
-      <p id="account"></p>
-      <p class="note">
-        Your dashboard is ready. No WhatsApp messages have been
-        imported or synchronized yet.
+      <p class="subtitle">
+        Your private chat dashboard
       </p>
-      <button id="logoutButton">Logout</button>
+
+      <form id="loginForm">
+        <label for="email">Email address</label>
+
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          autocomplete="username"
+          required
+        >
+
+        <label for="password">Password</label>
+
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+
+        <button id="loginButton" class="primary-button" type="submit">
+          Login Securely
+        </button>
+      </form>
+
+      <p id="loginStatus" class="status" role="status"></p>
+
+      <p class="note">
+        Secure sign-in for your personal dashboard.
+        WhatsApp messages are not connected yet.
+      </p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboardPage" class="container hidden">
+
+    <header class="topbar">
+      <div class="brand">
+        💬 Personal Chat Dashboard
+        <small>Your private workspace</small>
+      </div>
+
+      <button id="logoutButton" class="logout-button">
+        Logout ↗
+      </button>
+    </header>
+
+    <section class="welcome">
+      <h1>Welcome Back! 👋</h1>
+      <p id="accountEmail"></p>
+    </section>
+
+    <section class="stats">
+      <div class="stat-card">
+        <div class="icon">💬</div>
+        <h2 id="chatCount">0</h2>
+        <p>Imported Messages</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="icon">🔐</div>
+        <h2>Secure</h2>
+        <p>Authenticated Session</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="icon">📱</div>
+        <h2>Not Connected</h2>
+        <p>WhatsApp Connection</p>
+      </div>
     </section>
 
     <section class="panel">
-      <h2>Imported Chats</h2>
-      <p class="note">
-        Exported chat messages can be added in a later step.
+      <h2>📥 My Imported Chats</h2>
+
+      <p id="chatStatus">
+        Checking your saved messages...
       </p>
-      <div id="messages"></div>
+
+      <div id="chatList" class="chat-list"></div>
+
+      <button id="refreshButton" class="secondary-button">
+        Refresh Messages
+      </button>
     </section>
-  </main>
+
+    <section class="panel">
+      <h2>🔒 Privacy & Security</h2>
+
+      <p>
+        Only messages belonging to your authenticated account
+        should be displayed. Database access is protected by
+        Supabase Row Level Security policies.
+      </p>
+    </section>
+
+    <footer class="footer">
+      Personal Chat Dashboard · Private workspace
+    </footer>
+  </section>
 
   <script type="module">
     import { createClient } from
       'https://esm.sh/@supabase/supabase-js@2';
 
-    const SUPABASE_URL = 'https://ieevgoqhwnuskfdcxylw.supabase.co';
+    const SUPABASE_URL =
+      'https://ieevgoqhwnuskfdcxylw.supabase.co';
 
-    // Replace this placeholder with your Supabase publishable
-    // key (or legacy anon key). Never use a secret/service_role key.
-    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_3min89YQIrP0Y_oes75VDQ_uBxGRXu1';
+    /*
+      Paste your actual Supabase Publishable Key below.
+      It usually starts with sb_publishable_.
+      Never put a secret/service_role key in browser code.
+    */
+    const SUPABASE_PUBLISHABLE_KEY =
+      'sb_publishable_3min89YQIrP0Y_oes75VDQ_uBxGRXu1';
 
-    const login = document.getElementById('login');
-    const dashboard = document.getElementById('dashboard');
-    const status = document.getElementById('status');
+    const loginPage = document.getElementById('loginPage');
+    const dashboardPage = document.getElementById('dashboardPage');
+    const loginStatus = document.getElementById('loginStatus');
     const loginButton = document.getElementById('loginButton');
 
-    if (SUPABASE_PUBLISHABLE_KEY ===
-        'sb_publishable_3min89YQIrP0Y_oes75VDQ_uBxGRXu1') {
-      status.textContent =
-        'Setup required: add your Supabase publishable key.';
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    const chatStatus = document.getElementById('chatStatus');
+    const chatList = document.getElementById('chatList');
+    const chatCount = document.getElementById('chatCount');
+
+    let supabase = null;
+    let currentUserId = null;
+
+    function showLogin(message = '') {
+      loginPage.classList.remove('hidden');
+      dashboardPage.classList.add('hidden');
+      loginStatus.textContent = message;
+      currentUserId = null;
+    }
+
+    function showDashboard(session) {
+      if (!session) {
+        showLogin();
+        return;
+      }
+
+      currentUserId = session.user.id;
+
+      loginPage.classList.add('hidden');
+      dashboardPage.classList.remove('hidden');
+
+      document.getElementById('accountEmail').textContent =
+        session.user.email || 'Signed in';
+
+      loadMessages();
+    }
+
+    async function loadMessages() {
+      if (!supabase || !currentUserId) return;
+
+      chatStatus.textContent = 'Loading messages...';
+      chatList.replaceChildren();
+
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select('id, chat_name, sender, message, message_time')
+        .order('message_time', { ascending: false })
+        .limit(100);
+
+      if (error) {
+        chatStatus.textContent =
+          'Could not load messages. Check your database table and access policies.';
+        chatCount.textContent = '—';
+        return;
+      }
+
+      const messages = data || [];
+      chatCount.textContent = String(messages.length);
+
+      if (messages.length === 0) {
+        chatStatus.textContent =
+          'No imported messages yet. WhatsApp messages have not been synchronized.';
+        return;
+      }
+
+      chatStatus.textContent =
+        'Showing your saved messages.';
+
+      for (const item of messages) {
+        const card = document.createElement('article');
+        card.className = 'chat-item';
+
+        const heading = document.createElement('strong');
+        heading.textContent =
+          `${item.chat_name || 'Chat'} · ${item.sender || 'Unknown sender'}`;
+
+        const message = document.createElement('p');
+        message.textContent = item.message || '';
+
+        const time = document.createElement('div');
+        time.className = 'chat-time';
+        time.textContent = item.message_time
+          ? new Date(item.message_time).toLocaleString()
+          : '';
+
+        card.append(heading, message, time);
+        chatList.appendChild(card);
+      }
+    }
+
+    if (
+      SUPABASE_PUBLISHABLE_KEY ===
+      'PASTE_YOUR_PUBLISHABLE_KEY_HERE'
+    ) {
+      showLogin(
+        'Setup required: add your Supabase Publishable Key in index.html.'
+      );
     } else {
-      const supabase = createClient(
+      supabase = createClient(
         SUPABASE_URL,
         SUPABASE_PUBLISHABLE_KEY
       );
 
-      async function showSession(session) {
-        if (session) {
-          login.classList.add('hidden');
-          dashboard.classList.remove('hidden');
-          document.getElementById('account').textContent =
-            session.user.email || '';
-        } else {
-          dashboard.classList.add('hidden');
-          login.classList.remove('hidden');
-        }
-      }
-
       document.getElementById('loginForm').addEventListener(
-        'submit', async (event) => {
+        'submit',
+        async (event) => {
           event.preventDefault();
+
           loginButton.disabled = true;
-          status.textContent = 'Signing in...';
+          loginStatus.textContent = 'Signing in...';
 
-          const { data, error } =
-            await supabase.auth.signInWithPassword({
-              email: document.getElementById('email').value.trim(),
-              password: document.getElementById('password').value
-            });
+          try {
+            const { data, error } = await supabase.auth
+              .signInWithPassword({
+                email: emailInput.value.trim(),
+                password: passwordInput.value
+              });
 
-          loginButton.disabled = false;
+            if (error) {
+              loginStatus.textContent =
+                'Login failed. Check your email, password, and Supabase Auth settings.';
+              return;
+            }
 
-          if (error) {
-            status.textContent = 'Login failed. Check your credentials.';
-            return;
+            loginStatus.textContent = '';
+            showDashboard(data.session);
+          } catch (error) {
+            loginStatus.textContent =
+              'Connection error. Please check your internet and try again.';
+          } finally {
+            loginButton.disabled = false;
           }
-
-          status.textContent = '';
-          await showSession(data.session);
         }
       );
 
       document.getElementById('logoutButton').addEventListener(
-        'click', async () => {
-          await supabase.auth.signOut();
-          await showSession(null);
+        'click',
+        async () => {
+          const { error } = await supabase.auth.signOut();
+
+          if (error) {
+            alert('Logout failed. Please try again.');
+            return;
+          }
+
+          showLogin('You have logged out successfully.');
         }
       );
 
+      document.getElementById('refreshButton').addEventListener(
+        'click',
+        loadMessages
+      );
+
       supabase.auth.onAuthStateChange((_event, session) => {
-        showSession(session);
+        if (session) {
+          showDashboard(session);
+        } else {
+          showLogin();
+        }
       });
 
-      supabase.auth.getSession().then(({ data }) => {
-        showSession(data.session);
+      supabase.auth.getSession().then(({ data, error }) => {
+        if (error) {
+          showLogin('Could not verify your session. Please log in.');
+          return;
+        }
+
+        if (data.session) {
+          showDashboard(data.session);
+        } else {
+          showLogin();
+        }
       });
     }
   </script>
+
 </body>
 </html>
